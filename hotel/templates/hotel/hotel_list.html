@@ -1,0 +1,39 @@
+{% extends 'hotel/base.html' %}
+{% load static %} 
+{% block content %}
+
+
+<h1 style="text-align: center;">Hotel List</h1>
+<a href="{% url 'hotel_add' %}">Add Hotel</a>
+<div>
+{% for hotel in hotels %}
+<div class="card" style="margin: auto; width: 80%; border: 5px solid pink; padding: 20px;">
+   
+    <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light" >
+        {% if hotel.image %}
+      <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="img-fluid"/>
+      {% else %}
+      <p>No image available</p>
+  {% endif %}
+      <a href="#!">
+        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+      </a>
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ hotel.name }}</h5>
+      <p class="card-text">{{ hotel.description }}</p>
+      <a href="{% url 'hotel_edit' hotel.pk %}" class="btn btn-outline-warning" data-mdb-ripple-init>Edit</a>
+
+      <!-- Delete Hotel -->
+      <a href="{% url 'hotel_delete' hotel.pk %}" class="btn btn-outline-danger" data-mdb-ripple-init onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
+
+      <!-- View Rooms -->
+      <a href="{% url 'room_list' hotel.pk %}" class="btn btn-outline-success" data-mdb-ripple-init>View Rooms</a>
+
+      
+    </div>
+  </div>
+  <br><br><br>
+  {% endfor %}
+</div>
+{% endblock %}

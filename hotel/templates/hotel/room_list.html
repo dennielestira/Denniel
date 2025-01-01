@@ -1,0 +1,27 @@
+{% extends 'hotel/base.html' %}
+{% block content %}
+<h1 style="text-align: center;">Rooms in {{ hotel.name }}</h1>
+<a href="{% url 'room_add' hotel.id %}" style="text-align: center;">Add Room</a>
+<div>
+    {% for room in rooms %}
+<div class="card" style="margin: auto; width: 50%; border: 5px solid pink; padding: 20px;">
+    
+         {% if room.image %}
+            <img src="{{ room.image.url }}" alt="{{ room.name }}" class="card-img-top" alt="Fissure in Sandstone"style="max-width: 600px; height: auto;"/>
+            {% else %}
+      <p>No image available</p>
+  {% endif %}
+                <div class="card-body">
+                     <h5 class="card-title" style="font-size: 20px;">{{ room.name }} -{{ room.price }}pesos</h5>
+                     <p class="card-text">{{ room.description }}</p>
+
+                     <a href="{% url 'reservation_add' hotel_id=hotel.id room_id=room.id %}" class="btn btn-outline-success" data-mdb-ripple-init>Book This Room</a>
+                     <a href="{% url 'reservation_list' hotel_id=hotel.id room_id=room.id %}" class="btn btn-outline-primary" data-mdb-ripple-init>View Reservations</a>
+                     <a href="{% url 'room_edit' hotel_id=hotel.id pk=room.id %}" class="btn btn-outline-warning" data-mdb-ripple-init>Edit Room</a>
+                </div>
+    
+  </div><br><Br><br>
+  {% endfor %}
+</div>
+
+{% endblock %}
