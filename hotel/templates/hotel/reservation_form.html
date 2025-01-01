@@ -27,37 +27,32 @@
                         </div>
                     {% endif %}
                     
-                    <!-- Customer Name -->
                     <div>
                         <label for="id_customer_name">Customer Name:</label><br>
                         {{ form.customer_name }}
                     </div>
 
-                    <!-- Customer Email -->
                     <div>
                         <label for="id_customer_email">Customer Email:</label><br>
                         {{ form.customer_email }}
                     </div>
 
-                    <!-- Customer Phone -->
                     <div>
                         <label for="id_customer_phone">Customer Phone:</label><br>
                         {{ form.customer_phone }}
                     </div>
 
-                    <!-- Check-In Date -->
+
                     <div>
                         <label for="id_check_in">Check-In Date:</label><br>
                         {{ form.check_in }}
                     </div>
 
-                    <!-- Check-Out Date -->
                     <div>
                         <label for="id_check_out">Check-Out Date:</label><br>
                         {{ form.check_out }}
                     </div>
 
-                    <!-- Room Selection -->
                     <div>
                         <label for="id_room">Room:</label><br>
                         {{ form.room }}
@@ -73,16 +68,16 @@
 
 
 
-<!-- Use JavaScript to set the minimum date for the date inputs -->
+
 <script>
-    // Get today's date in the format YYYY-MM-DD
+
     var today = new Date().toISOString().split('T')[0];
 
-    // Set the 'min' attribute for both check_in and check_out fields to today's date
+
     document.getElementById("id_check_in").setAttribute("min", today);
     document.getElementById("id_check_out").setAttribute("min", today);
 
-    // Optionally, if you're using Flatpickr, initialize it as well
+
     flatpickr("#id_check_in", { dateFormat: "Y-m-d" });
     flatpickr("#id_check_out", { dateFormat: "Y-m-d" });
 </script>

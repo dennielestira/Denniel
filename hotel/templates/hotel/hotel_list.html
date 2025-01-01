@@ -24,10 +24,8 @@
       <p class="card-text">{{ hotel.description }}</p>
       <a href="{% url 'hotel_edit' hotel.pk %}" class="btn btn-outline-warning" data-mdb-ripple-init>Edit</a>
 
-      <!-- Delete Hotel -->
       <a href="{% url 'hotel_delete' hotel.pk %}" class="btn btn-outline-danger" data-mdb-ripple-init onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
 
-      <!-- View Rooms -->
       <a href="{% url 'room_list' hotel.pk %}" class="btn btn-outline-success" data-mdb-ripple-init>View Rooms</a>
 
       

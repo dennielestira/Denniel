@@ -5,7 +5,6 @@ from .models import Hotel, Reservation, Room
 from .forms import HotelForm, ReservationForm, RoomForm
 from django.shortcuts import redirect
 
-# Hotel Views
 def index(request):
     a_hotel = Hotel.objects.count()
     return render(request, 'hotel/index.html')
@@ -16,7 +15,6 @@ def hotel_list(request):
 
 def hotel_add(request):
     if request.method == 'POST':
-
         form = HotelForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
@@ -33,9 +31,8 @@ def hotel_edit(request, pk):
             form.save()
             return redirect('hotel_list')
     else:
-        form = HotelForm(instance=hotel)  # Use the form with existing hotel data
+        form = HotelForm(instance=hotel)
     return render(request, 'hotel/edit_hotel.html', {'form': form, 'hotel': hotel})
-
 
 def hotel_delete(request, pk):
     hotel = get_object_or_404(Hotel, pk=pk)
@@ -46,28 +43,24 @@ def room_list(request, hotel_id):
     hotel = get_object_or_404(Hotel, pk=hotel_id)
     rooms = hotel.rooms.all()
 
-    # Get all reservations for each room
     for room in rooms:
         room.bookings = Reservation.objects.filter(room=room)
 
     return render(request, 'hotel/room_list.html', {'hotel': hotel, 'rooms': rooms})
 
-
 def room_add(request, hotel_id):
-    hotel = get_object_or_404(Hotel, pk=hotel_id)  # Fetch hotel by ID
+    hotel = get_object_or_404(Hotel, pk=hotel_id)
     if request.method == 'POST':
-        form = RoomForm(request.POST, request.FILES)  # Bind the POST data and files to the form
+        form = RoomForm(request.POST, request.FILES)
         if form.is_valid():
-            room = form.save(commit=False)  # Don't save the room yet
-            room.hotel = hotel  # Associate the room with the hotel
-            room.save()  # Now save the room
-            return redirect('room_list', hotel_id=hotel.id)  # Redirect to room list view for that hotel
+            room = form.save(commit=False)
+            room.hotel = hotel
+            room.save()
+            return redirect('room_list', hotel_id=hotel.id)
     else:
-        form = RoomForm()  # Initialize the form if GET request
+        form = RoomForm()
     
     return render(request, 'hotel/room_form.html', {'form': form, 'hotel': hotel})
-
-
 
 def room_edit(request, hotel_id, pk):
     hotel = get_object_or_404(Hotel, pk=hotel_id)
@@ -83,12 +76,11 @@ def room_edit(request, hotel_id, pk):
 
     return render(request, 'hotel/room_edit.html', {'form': form, 'hotel': hotel, 'room': room})
 
-
 def room_delete(request, hotel_id, pk):
     room = get_object_or_404(Room, pk=pk)
     room.delete()
     return redirect('room_list', hotel_id=hotel_id)
-# Reservation Views
+
 def reservation_add(request, hotel_id, room_id):
     hotel = get_object_or_404(Hotel, pk=hotel_id)
     room = get_object_or_404(Room, pk=room_id)
@@ -97,7 +89,7 @@ def reservation_add(request, hotel_id, room_id):
         form = ReservationForm(request.POST)
         if form.is_valid():
             reservation = form.save(commit=False)
-            reservation.room = room  # Link the selected room
+            reservation.room = room
             reservation.save()
             return redirect('reservation_list', hotel_id=hotel.id, room_id=room.id)
     else:
@@ -106,18 +98,16 @@ def reservation_add(request, hotel_id, room_id):
     return render(request, 'hotel/reservation_form.html', {'form': form, 'hotel': hotel, 'room': room})
 
 def reservation_list(request, hotel_id, room_id):
-    hotel = get_object_or_404(Hotel, pk=hotel_id)  # Get the hotel by ID
-    room = get_object_or_404(Room, pk=room_id)    # Get the room by ID
-    reservations = Reservation.objects.filter(room=room)  # Get the reservations for that room
+    hotel = get_object_or_404(Hotel, pk=hotel_id)
+    room = get_object_or_404(Room, pk=room_id)
+    reservations = Reservation.objects.filter(room=room)
 
     return render(request, 'hotel/reservation_list.html', {
-        'hotel': hotel,  # Ensure 'hotel' is passed to the template
-        'room': room,    # Ensure 'room' is passed to the template
+        'hotel': hotel,
+        'room': room,
         'reservations': reservations
     })
 
-
-    return render(request, 'hotel/reservation_list.html', {'room': room, 'reservations': reservations})
 def reservation_edit(request, hotel_id, room_id, reservation_id):
     reservation = get_object_or_404(Reservation, pk=reservation_id)
 
@@ -130,6 +120,7 @@ def reservation_edit(request, hotel_id, room_id, reservation_id):
         form = ReservationForm(instance=reservation)
 
     return render(request, 'hotel/reservation_form.html', {'form': form, 'hotel_id': hotel_id, 'room_id': room_id, 'reservation': reservation})
+
 def reservation_change_status(request, hotel_id, room_id, reservation_id, new_status):
     reservation = get_object_or_404(Reservation, pk=reservation_id)
     if new_status in dict(Reservation.STATUS_CHOICES):

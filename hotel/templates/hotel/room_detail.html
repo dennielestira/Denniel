@@ -1,6 +1,6 @@
 <h1>Room Details: {{ room.name }}</h1>
 
-<p>Status: {{ room.get_status_display }}</p>  <!-- Display human-readable status -->
+<p>Status: {{ room.get_status_display }}</p>  
 
 <form method="post">
     {% csrf_token %}
