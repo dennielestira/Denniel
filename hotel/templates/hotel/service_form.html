@@ -1,0 +1,62 @@
+{% extends 'hotel/base.html' %}
+{% load static %}
+{% block content %}
+
+<br><br>
+<section class="text-center text-lg-start">
+  <div class="card mb-3">
+    <div class="row g-0 d-flex align-items-center">
+      <!-- Left image section -->
+      <div class="col-lg-4 d-none d-lg-flex">
+        <img src="{% static 'img/pic3.jpg' %}"
+             style="height: 1000px" class="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5" alt="Service Image"/>
+      </div>
+      <!-- Right form section -->
+      <div class="col-lg-8">
+        <div class="card-body py-5 px-md-5">
+          <h1 class="my-4">Add Service</h1>
+          
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              <ul>
+                {% for field in form %}
+                  {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+            
+            <!-- Service Name -->
+            <div class="form-outline mb-4">
+              <label for="id_name" class="form-label">Service Name</label><br>
+              {{ form.name }}
+            </div>
+
+            <!-- Description -->
+            <div class="form-outline mb-4">
+              <label for="id_description" class="form-label">Description</label><br>
+              {{ form.description }}
+            </div>
+
+            <!-- Price -->
+            <div class="form-outline mb-4">
+              <label for="id_price" class="form-label">Price</label><br>
+              {{ form.price }}
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn btn-primary btn-block mb-4">Save Service</button>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

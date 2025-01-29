@@ -1,0 +1,46 @@
+{% extends 'hotel/base.html' %}
+{% load static %}
+{% block content %}
+<br><Br>
+<section class="text-center text-lg-start">
+  <div class="card mb-3">
+    <div class="row g-0 d-flex align-items-center">
+      <!-- Left image section -->
+      <div class="col-lg-4 d-none d-lg-flex">
+        <img src="{% static 'img/pic3.jpg' %}"
+             class="w-100 rounded-t-5 rounded-tr-lg-0 rounded-bl-lg-5" alt="Hotel Image"/>
+      </div>
+      <!-- Right form section -->
+      <div class="col-lg-8">
+        <div class="card-body py-5 px-md-5">
+          <form method="POST">
+            {% csrf_token %}
+            <h2 class="my-4">Login</h2>
+
+            <!-- Username input -->
+            <div class="form-outline mb-4">
+              <label for="{{ form.username.id_for_label }}" class="form-label">Username</label><br>
+              {{ form.username }}
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline mb-4">
+              <label for="{{ form.password.id_for_label }}" class="form-label">Password</label><br>
+              {{ form.password }}
+            </div>
+
+
+
+            <!-- Submit button -->
+            <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Login</button>
+
+            <!-- Register link -->
+            <p class="mt-3">Don't have an account? <a href="{% url 'register' %}">Register here</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

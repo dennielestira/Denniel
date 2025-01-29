@@ -1,37 +1,48 @@
 {% extends 'hotel/base.html' %}
-{% load static %} 
+{% load static %}
 {% block content %}
-
-
 <h1 style="text-align: center;">Hotel List</h1>
-<a href="{% url 'hotel_add' %}">Add Hotel</a>
-<div>
-{% for hotel in hotels %}
-<div class="card" style="margin: auto; width: 80%; border: 5px solid pink; padding: 20px;">
-   
-    <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light" >
-        {% if hotel.image %}
-      <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="img-fluid"/>
-      {% else %}
-      <p>No image available</p>
-  {% endif %}
-      <a href="#!">
-        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-      </a>
+{% if user.is_staff %}
+    <a href="{% url 'hotel_add' %}" class="btn btn-outline-primary">Add Hotel</a>
+{% endif %}
+
+<section>
+    <div>
+        {% for hotel in hotels %}
+        <div class="about lobster-font-family">
+            <div class="containerss">
+                <h2 class="text-center text-capitalize">{{ hotel.name }}</h2>
+                <img src="{% static 'img/shape.png' %}" alt="Shape">
+                
+                <div class="row">
+                    <div class="col-lg-6 col-12">
+                        <p>{{ hotel.description }}</p>
+                        {% if user.is_staff %}
+                            <div class="buttons">
+                                <a href="{% url 'hotel_edit' hotel.pk %}" class="btn btn-outline-warning">Edit</a>
+                                <a href="{% url 'hotel_delete' hotel.pk %}" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
+                            </div>
+                        {% endif %}
+                        <div class="buttons">
+                        <a href="{% url 'room_list' hotel.pk %}" class="btn btn-outline-success">View Rooms</a>
+                            <a href="{% url 'event_list' hotel.pk %}" class="btn btn-outline-primary btn-sm">View Events</a>
+                            <a href="{% url 'service_list' hotel.pk %}" class="btn btn-outline-primary btn-sm">View Services</a>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-12">
+                        <div class="img">
+                            {% if hotel.image %}
+                                <img src="{{ hotel.image.url }}" alt="{{ hotel.name }}" class="img-fluid"/>
+                            {% else %}
+                                <p>No image available</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    <div class="card-body">
-      <h5 class="card-title">{{ hotel.name }}</h5>
-      <p class="card-text">{{ hotel.description }}</p>
-      <a href="{% url 'hotel_edit' hotel.pk %}" class="btn btn-outline-warning" data-mdb-ripple-init>Edit</a>
-
-      <a href="{% url 'hotel_delete' hotel.pk %}" class="btn btn-outline-danger" data-mdb-ripple-init onclick="return confirm('Are you sure you want to delete this hotel?');">Delete</a>
-
-      <a href="{% url 'room_list' hotel.pk %}" class="btn btn-outline-success" data-mdb-ripple-init>View Rooms</a>
-
-      
-    </div>
-  </div>
-  <br><br><br>
-  {% endfor %}
-</div>
+</section>
 {% endblock %}

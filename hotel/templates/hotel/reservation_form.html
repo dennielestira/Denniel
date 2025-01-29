@@ -1,85 +1,135 @@
 {% extends 'hotel/base.html' %}
-
+{% load static %}
 {% block content %}
-
-<div class="container">
-    <div class="body d-md-flex align-items-center justify-content-between">
-        <div class="box-1 mt-md-0 mt-5">
-            <img src="https://images.pexels.com/photos/2033997/pexels-photo-2033997.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-                class="" alt="">
-        </div>
-        <div class=" box-2 d-flex flex-column h-100">
-            <div class="mt-5">
-                <h1>Make a Reservation</h1>
-                <form method="post" enctype="multipart/form-data">
-
-                    {% csrf_token %}
-                    
-                    {% if form.errors %}
-                        <div class="alert alert-danger" role="alert">
-                            <ul>
-                                {% for field in form %}
-                                    {% for error in field.errors %}
-                                        <li>{{ error }}</li>
-                                    {% endfor %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-                    
-                    <div>
-                        <label for="id_customer_name">Customer Name:</label><br>
-                        {{ form.customer_name }}
-                    </div>
-
-                    <div>
-                        <label for="id_customer_email">Customer Email:</label><br>
-                        {{ form.customer_email }}
-                    </div>
-
-                    <div>
-                        <label for="id_customer_phone">Customer Phone:</label><br>
-                        {{ form.customer_phone }}
-                    </div>
-
-
-                    <div>
-                        <label for="id_check_in">Check-In Date:</label><br>
-                        {{ form.check_in }}
-                    </div>
-
-                    <div>
-                        <label for="id_check_out">Check-Out Date:</label><br>
-                        {{ form.check_out }}
-                    </div>
-
-                    <div>
-                        <label for="id_room">Room:</label><br>
-                        {{ form.room }}
-                    </div>
-
-                    <button type="submit">Book Reservation</button>
-
-                </form>
+<section class="h-100 h-custom" style="background-color: #8fc4b7;">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-lg-8 col-xl-6">
+        <div class="card rounded-3">
+          <div class="row g-0">
+            <div class="col-6">
+              <img src="{{ hotel.image.url }}" 
+                   class="img-fluid" style="border-top-left-radius: .3rem;" alt="Hotel Image">
+                   <h6>{{ hotel.name }}</h6>
             </div>
+            <div class="col-6">
+              <img src="{{ room.image.url }}" 
+                   class="img-fluid" style="border-top-right-radius: .3rem;" alt="Room Image">
+                   <h6>{{ room.name }}</h6>
+            </div>
+          </div>
+          <div class="card-body p-4 p-md-5">
+            <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">Make a Reservation</h3>
+            
+
+
+            <p>{{ user }}</p>
+            
+            <form method="post" enctype="multipart/form-data" class="px-md-2">
+              {% csrf_token %}
+              
+              {% if form.non_field_errors %}
+                <div class="alert alert-danger" role="alert">
+                  <ul class="error-list">
+                    {% for error in form.non_field_errors %}
+                      <li>{{ error }}</li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+              
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label for="id_customer_name" class="form-label">Customer Name:</label>
+                {{ form.customer_name }}
+                {% if form.customer_name.errors %}
+                  <div class="alert alert-danger small-error">
+                    {% for error in form.customer_name.errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label for="id_customer_email" class="form-label">Customer Email:</label>
+                {{ form.customer_email }}
+                {% if form.customer_email.errors %}
+                  <div class="alert alert-danger small-error">
+                    {% for error in form.customer_email.errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label for="id_customer_phone" class="form-label">Customer Phone:</label>
+                {{ form.customer_phone }}
+                {% if form.customer_phone.errors %}
+                  <div class="alert alert-danger small-error">
+                    {% for error in form.customer_phone.errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <div class="row mb-4">
+                <div class="col-md-6">
+                  <div data-mdb-input-init class="form-outline">
+                    <label for="id_check_in" class="form-label">Check-In Date:</label>
+                    {{ form.check_in }}
+                    {% if form.check_in.errors %}
+                      <div class="alert alert-danger small-error">
+                        {% for error in form.check_in.errors %}
+                          <p>{{ error }}</p>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div data-mdb-input-init class="form-outline">
+                    <label for="id_check_out" class="form-label">Check-Out Date:</label>
+                    {{ form.check_out }}
+                    {% if form.check_out.errors %}
+                      <div class="alert alert-danger small-error">
+                        {% for error in form.check_out.errors %}
+                          <p>{{ error }}</p>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mb-4">
+                <label for="id_services" class="form-label">Services:</label>
+                {{ form.services }}
+                {% if form.services.errors %}
+                  <div class="alert alert-danger small-error">
+                    {% for error in form.services.errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+              
+              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-success btn-lg mb-1">Submit</button>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-
-
-
+  </div>
+</section>
 
 <script>
+  var today = new Date().toISOString().split('T')[0];
+  document.getElementById("id_check_in").setAttribute("min", today);
+  document.getElementById("id_check_out").setAttribute("min", today);
 
-    var today = new Date().toISOString().split('T')[0];
-
-
-    document.getElementById("id_check_in").setAttribute("min", today);
-    document.getElementById("id_check_out").setAttribute("min", today);
-
-
-    flatpickr("#id_check_in", { dateFormat: "Y-m-d" });
-    flatpickr("#id_check_out", { dateFormat: "Y-m-d" });
+  flatpickr("#id_check_in", { dateFormat: "Y-m-d" });
+  flatpickr("#id_check_out", { dateFormat: "Y-m-d" });
 </script>
-
 {% endblock %}

@@ -1,40 +1,43 @@
-{% extends 'hotel/base.html' %}
-{% load static %} 
+{% extends 'hotel/base.html' %}  
+{% load static %}
+
 {% block content %}
-<section>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="p-5 mb-4 bg-light rounded-3">
-                <div class="container-fluid py-5">
-                    <h1 class="display-8 fw-bold">Hotel Management</h1>
-                    <p class="col-md-8 fs-9">The Website offers you a privileged experience combining comfort and conviviality.
-                         Whether you are a backpacker, a solo traveler or with your family, our hotel with top-of-the-range 
-                         service will meet all your expectations. More than just a hotel, It offers you a place to live and 
-                         meet people.</p>
-                </div>
+
+<div class="about lobster-font-family">
+    <div class="container">
+        <h2 class="text-center text-capitalize">DennStay.ph</h2>
+        
+
+        
+        <img src="{% static 'img/shape.png' %}" alt="Shape Image">
+        
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <h4>A best place to enjoy your life</h4>
+                <p>DennStay.ph is your ultimate guide to finding the perfect hotel for every trip in the Philippines. Whether you're traveling for business, leisure, or a family vacation, StayFinder.ph offers a comprehensive and user-friendly platform to search, compare, and book accommodations across the archipelago. From luxurious resorts and boutique hotels to budget-friendly options and cozy retreats, StayFinder.ph provides detailed information, guest reviews, and exclusive deals to ensure you get the best value for your stay.</p>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="img"></div>
             </div>
         </div>
-    
-        <div class="col-md-3">
-            <div class="card ">
-                <div class="card-header"style="background-color: #e3f2fd;">
-                    Pinned
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Select a hotel first</h5>
-                </div>
+        
+        <h2 class="text-capitalize" id="room">Best Hotel</h2>
+        
+        <div class="row">
+            <div class="col-lg-4 col-12">
+                <div class="img"></div>
             </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card ">
-                <div class="card-header"style="background-color: #e3f2fd;">
-                    Pinned
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">Check the available Rooms</h5>
+            <div class="col-lg-8 col-12">
+                <div class="block">
+                    <div>
+                        <img src="{% static 'img/sapphire.jpg' %}" alt="The Ocean Breeze Resort">
+                        <strong>The Ocean Breeze Resort</strong>
+                        <p>The Ocean Breeze Resort offers a tranquil retreat along the pristine coastline of the Philippines. With its serene beachfront, luxurious amenities, and world-class service, this resort is the perfect getaway for those looking to unwind and reconnect with nature.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
+
 {% endblock %}

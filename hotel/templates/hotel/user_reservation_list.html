@@ -1,0 +1,114 @@
+{% extends "hotel/base.html" %}
+
+{% block content %}
+<br><Br>
+{% if user.is_staff %}
+
+{% else %}
+<h1>Your Reservations</h1>
+
+{% if reservations %}
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th>Users</th>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Services</th>
+                
+                <th>Status</th>
+                <th>Button</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reservation in reservations %}
+    <tr>
+        <td>{{reservation.user}}</td>
+            <td>{{ reservation.customer_name }}</td>
+            <td>{{ reservation.customer_email }}</td>
+            <td>{{ reservation.customer_phone }}</td>
+            <td>{{ reservation.check_in }}</td>
+            <td>{{ reservation.check_out }}</td>
+            <td>
+                {% if reservation.services.all %}
+                    <ul>
+                    {% for service in reservation.services.all %}
+                        <li>{{ service.name }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    No services selected
+                {% endif %}
+            </td>
+            <td>{{ reservation.get_status_display }}</td>
+        <td>
+            <a href="{% url 'reservation_edit' hotel_id=reservation.room.hotel.id room_id=reservation.room.id reservation_id=reservation.id %}" 
+               class="btn btn-warning">
+               <i class="bi bi-pencil"></i>
+            </a>
+            
+            {% if reservation.get_status_display == 'Scheduled' %}
+                <a href="{% url 'reservation_change_status' hotel_id=reservation.room.hotel.id room_id=reservation.room.id reservation_id=reservation.id new_status='cancelled' %}" 
+                   class="btn btn-danger"
+                   onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                   <i class="bi bi-trash"></i>
+                </a>
+            {% endif %}
+            
+            {% if user.is_staff %}
+                {% if reservation.get_status_display == 'Scheduled' %}
+                    <a href="{% url 'reservation_change_status' hotel_id=reservation.room.hotel.id room_id=reservation.room.id reservation_id=reservation.id new_status='completed' %}" 
+                       class="btn btn-success"
+                       onclick="return confirm('Are you sure you want to mark this reservation as completed?')">
+                       <i class="bi bi-check-circle"></i>
+                    </a>
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+
+        </tbody>
+    </table>
+{% else %}
+    <p>You have no reservations.</p>
+{% endif %}
+{% endif %}
+
+<!-- Admin View -->
+{% if user.is_staff %}
+    <hr>
+    <h2>All Bookings (Admin View)</h2>
+    {% if all_bookings %}
+        <table class="table table-info table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Hotel</th>
+                    <th>Room</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in all_bookings %}
+                    <tr>
+                        <td>{{ booking.user.username }}</td>
+                        <td>{{ booking.room.hotel.name }}</td>
+                        <td>{{ booking.room.name }}</td>
+                        <td>{{ booking.check_in }}</td>
+                        <td>{{ booking.check_out }}</td>
+                        <td>{{ booking.get_status_display }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No bookings found.</p>
+    {% endif %}
+{% endif %}
+{% endblock %}

@@ -1,47 +1,63 @@
 {% extends 'hotel/base.html' %}
+
 {% block content %}
-
-<h1>Reservations for {{ room.name }} in {{ hotel.name }}</h1>
-<table class="table table-success table-striped">
-    <thead>
+<div class="manage">
+    <h1>Reservations for {{ room.name }} in {{ hotel.name }}</h1>
+    <table class="table table-success table-striped">
+        <thead>
+            <tr>
+                <th>Users</th>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Check-in Date</th>
+                <th>Check-out Date</th>
+                <th>Services</th>
+                
+                <th>Status</th>
+                <th>Button</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reservation in reservations %}
         <tr>
-            <th>Customer Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Check-in Date</th>
-            <th>check_out Date</th>
-            <th>Status</th>
-            <th>Button</th>
+            <td>{{reservation.user}}</td>
+            <td>{{ reservation.customer_name }}</td>
+            <td>{{ reservation.customer_email }}</td>
+            <td>{{ reservation.customer_phone }}</td>
+            <td>{{ reservation.check_in }}</td>
+            <td>{{ reservation.check_out }}</td>
+            <td>
+                {% if reservation.services.all %}
+                    <ul>
+                    {% for service in reservation.services.all %}
+                        <li>{{ service.name }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    No services selected
+                {% endif %}
+            </td>
+            
+            <td>{{ reservation.get_status_display }}</td>
+            <td>
+                <a href="{% url 'reservation_edit' hotel_id=hotel.id room_id=room.id reservation_id=reservation.id %}" class="btn btn-warning"><i class="bi bi-pencil"></i></a>
+
+                {% if reservation.get_status_display == 'Scheduled' %}
+                    <a href="{% url 'reservation_change_status' hotel_id=hotel.id room_id=room.id reservation_id=reservation.id new_status='cancelled' %}" class="btn btn-danger"
+                    onclick="return confirm('Are you sure you want to cancel this appointment?')"><i class="bi bi-trash"></i></a>
+                {% endif %}
+
+                {% if user.is_staff %}
+                    {% if reservation.get_status_display == 'Scheduled' %}
+                        <a href="{% url 'reservation_change_status' hotel_id=hotel.id room_id=room.id reservation_id=reservation.id new_status='completed' %}" class="btn btn-success"
+                        onclick="return confirm('Are you sure you want to mark this reservation as completed?')"><i class="bi bi-check-circle"></i></a>
+                    {% endif %}
+                {% endif %}
+            </td>
         </tr>
-    </thead>
-    <tbody>
-    {% for reservation in reservations %}
-    <tr>
-        <td>{{ reservation.customer_name }}</td>
-        <td>{{ reservation.customer_email }}</td>
-        <td>{{ reservation.customer_phone }}</td>
-        <td>{{ reservation.check_in }}</td>
-        <td>{{ reservation.check_out }}</td>
-        <td>{{ reservation.get_status_display }}</td>
-        <td>
-
-            <a href="{% url 'reservation_edit' hotel_id=hotel.id room_id=room.id reservation_id=reservation.id %}" class="btn btn-warning" ><i class="bi bi-pencil"></i></a>
-
-
-            {% if reservation.get_status_display == 'Scheduled' %}
-                <a href="{% url 'reservation_change_status' hotel_id=hotel.id room_id=room.id reservation_id=reservation.id new_status='cancelled' %}" class="btn btn-danger"
-                   onclick="return confirm('Are you sure you want to cancel this appointment?')"><i class="bi bi-trash"></i></a>
-            {% endif %}
-
-            {% if reservation.get_status_display == 'Scheduled' %}
-                <a href="{% url 'reservation_change_status' hotel_id=hotel.id room_id=room.id reservation_id=reservation.id new_status='completed' %}" class="btn btn-success"
-                   onclick="return confirm('Are you sure you want to mark this appointment as completed?')"><i class="bi bi-check-circle"></i></a>
-            {% endif %}
-        </td>
-
-   
-    {% endfor %}
-</tbody>
-</table>
-
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock %}
